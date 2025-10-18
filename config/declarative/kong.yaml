@@ -1,0 +1,491 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: public-account
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+      - name: POST-public-account
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["POST", "OPTIONS"]
+        paths: ["~/v1/auth/?$", "~/v1/auth/refresh/?$", "~/v1/auth/forgot/?$"]
+        strip_path: false
+      - name: PATCH-public-account
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["PATCH", "OPTIONS"]
+        paths: ["~/v1/auth/password/?$"]
+        strip_path: false
+
+  - name: private-account
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+      - name: GET-ALL-admins
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/admins/?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+      - name: GET-admins
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/admins/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+      - name: POST-admins
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["POST", "OPTIONS"]
+        paths: ["~/v1/admins/?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+      - name: PATCH-admins
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["PATCH", "OPTIONS"]
+        paths: ["~/v1/admins/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+
+      - name: GET-ALL-holders
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/holders/?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+      - name: GET-holders
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/holders/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+      - name: POST-holders
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["POST", "OPTIONS"]
+        paths: ["~/v1/holders/?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+      - name: PATCH-holders
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["PATCH", "OPTIONS"]
+        paths: ["~/v1/holders/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+      - name: DELETE-holders
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["DELETE", "OPTIONS"]
+        paths: ["~/v1/holders/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+
+      - name: POST-holders-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["POST", "OPTIONS"]
+        paths: ["~/v1/holders/([^/]+)/dependents?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+      - name: PATCH-holders-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["PATCH", "OPTIONS"]
+        paths: ["~/v1/holders/([^/]+)/dependents/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+      - name: DELETE-holders-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["DELETE", "OPTIONS"]
+        paths: ["~/v1/holders/([^/]+)/dependents/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+
+      - name: GET-ALL-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/dependents/?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+      - name: GET-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/dependents/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+      - name: PATCH-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["PATCH", "OPTIONS"]
+        paths: ["~/v1/dependents/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "dependent"]
+      - name: DELETE-dependents
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["DELETE", "OPTIONS"]
+        paths: ["~/v1/dependents/([^/]+)?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "dependent"]
+
+      - name: GET-users-avatar
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["GET", "OPTIONS"]
+        paths: ["~/v1/users/([^/]+)/avatar?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+      - name: PUT-users-avatar
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["PUT", "OPTIONS"]
+        paths: ["~/v1/users/([^/]+)/avatar?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+      - name: DELETE-users-avatar
+        hosts: [${{ env "DECK_API_HOSTNAME" }}]
+        methods: ["DELETE", "OPTIONS"]
+        paths: ["~/v1/users/([^/]+)/avatar?$"]
+        strip_path: false
+        plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+
+  - name: private-budgets
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+    - name: GET-ALL-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/budgets/?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+    - name: GET-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/budgets/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+
+    - name: GET-ALL-users-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/budgets?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: GET-users-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/budgets/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: POST-users-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["POST", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/budgets?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: PATCH-users-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["PATCH", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/budgets/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: DELETE-users-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/budgets/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+
+  - name: private-categories
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+    - name: GET-ALL-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/categories/?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+    - name: GET-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/categories/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+
+    - name: GET-ALL-users-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/categories?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: GET-users-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/categories/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: POST-users-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["POST", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/categories?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: PATCH-users-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["PATCH", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/categories/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: DELETE-users-categories
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/categories/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+
+  - name: private-expenses
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+    - name: GET-ALL-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/expenses/?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+    - name: GET-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/expenses/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+
+    - name: GET-ALL-users-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/expenses?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: GET-users-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/expenses/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: POST-users-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["POST", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/expenses?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: PATCH-users-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["PATCH", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/expenses/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: DELETE-users-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/expenses/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+
+  - name: private-incomes
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+    - name: GET-ALL-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/incomes/?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+    - name: GET-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/incomes/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin"]
+
+    - name: GET-ALL-users-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/incomes?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: GET-users-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/incomes/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: POST-users-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["POST", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/incomes?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: PATCH-users-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["PATCH", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/incomes/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder"]
+    - name: DELETE-users-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/incomes/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+
+plugins:
+  - name: jwt
+    service: private-account
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+  - name: jwt
+    service: private-budgets
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+
+  - name: cors
+    config:
+      origins: ["*"]
+      methods: ["GET", "POST", "PATCH", "PUT", "OPTIONS", "HEAD", "DELETE"]
+      headers: ["Accept", "Accept-Version", "Content-Length", "Content-MD5", "Content-Type", "Date", "X-Auth-Token", "Authorization"]
+      exposed_headers: ["X-Total-Count"]
+      credentials: true
+      max_age: 3600
