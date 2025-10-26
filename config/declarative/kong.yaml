@@ -262,6 +262,15 @@ services:
           - name: acl
             config:
               allow: ["admin", "holder", "dependent"]
+    - name: DELETE-ALL-users-budgets
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/budgets?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
 
   - name: private-categories
     url: ${{ env "DECK_ACCOUNT_SERVICE" }}
@@ -398,6 +407,15 @@ services:
           - name: acl
             config:
               allow: ["admin", "holder", "dependent"]
+    - name: DELETE-ALL-users-expenses
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/expenses?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
 
   - name: private-incomes
     url: ${{ env "DECK_ACCOUNT_SERVICE" }}
@@ -461,6 +479,15 @@ services:
       hosts: [${{ env "DECK_API_HOSTNAME" }}]
       methods: ["DELETE", "OPTIONS"]
       paths: ["~/v1/users/([^/]+)/incomes/([^/]+)?$"]
+      strip_path: false
+      plugins:
+          - name: acl
+            config:
+              allow: ["admin", "holder", "dependent"]
+    - name: DELETE-ALL-users-incomes
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["DELETE", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/incomes?$"]
       strip_path: false
       plugins:
           - name: acl
