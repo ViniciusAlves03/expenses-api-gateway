@@ -494,6 +494,37 @@ services:
             config:
               allow: ["admin", "holder", "dependent"]
 
+  - name: private-analytics
+    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    routes:
+    - name: GET-users-reports-summary
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/reports/summary/?$"]
+      strip_path: false
+      plugins:
+        - name: acl
+          config:
+            allow: ["admin", "holder", "dependent"]
+    - name: GET-users-reports-budget-vs-actual
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/reports/budget-vs-actual/?$"]
+      strip_path: false
+      plugins:
+        - name: acl
+          config:
+            allow: ["admin", "holder", "dependent"]
+    - name: GET-users-reports-export
+      hosts: [${{ env "DECK_API_HOSTNAME" }}]
+      methods: ["GET", "OPTIONS"]
+      paths: ["~/v1/users/([^/]+)/reports/export/?$"]
+      strip_path: false
+      plugins:
+        - name: acl
+          config:
+            allow: ["admin", "holder", "dependent"]
+
 plugins:
   - name: jwt
     service: private-account
@@ -503,6 +534,30 @@ plugins:
         - exp
   - name: jwt
     service: private-budgets
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+  - name: jwt
+    service: private-categories
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+  - name: jwt
+    service: private-expenses
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+  - name: jwt
+    service: private-incomes
+    config:
+      key_claim_name: kid
+      claims_to_verify:
+        - exp
+  - name: jwt
+    service: private-analytics
     config:
       key_claim_name: kid
       claims_to_verify:
