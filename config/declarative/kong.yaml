@@ -196,7 +196,7 @@ services:
               allow: ["admin", "holder", "dependent"]
 
   - name: private-budgets
-    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    url: ${{ env "DECK_BUDGETS_SERVICE" }}
     routes:
     - name: GET-ALL-budgets
       hosts: [${{ env "DECK_API_HOSTNAME" }}]
@@ -273,7 +273,7 @@ services:
               allow: ["admin", "holder", "dependent"]
 
   - name: private-categories
-    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    url: ${{ env "DECK_CATEGORIES_SERVICE" }}
     routes:
     - name: GET-ALL-categories
       hosts: [${{ env "DECK_API_HOSTNAME" }}]
@@ -341,7 +341,7 @@ services:
               allow: ["admin", "holder", "dependent"]
 
   - name: private-expenses
-    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    url: ${{ env "DECK_EXPENSES_SERVICE" }}
     routes:
     - name: GET-ALL-expenses
       hosts: [${{ env "DECK_API_HOSTNAME" }}]
@@ -418,7 +418,7 @@ services:
               allow: ["admin", "holder", "dependent"]
 
   - name: private-incomes
-    url: ${{ env "DECK_ACCOUNT_SERVICE" }}
+    url: ${{ env "DECK_INCOMES_SERVICE" }}
     routes:
     - name: GET-ALL-incomes
       hosts: [${{ env "DECK_API_HOSTNAME" }}]
