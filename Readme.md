@@ -46,7 +46,7 @@ Este projeto é projetado para ser executado exclusivamente com Docker, idealmen
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/ViniciusAlves03/DS-api-gateway.git](https://github.com/ViniciusAlves03/DS-api-gateway.git)
+    git clone https://github.com/ViniciusAlves03/DS-api-gateway.git
     cd DS-api-gateway
     ```
 
